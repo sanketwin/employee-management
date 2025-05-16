@@ -1,0 +1,35 @@
+<div class="login-box">
+  <h2>Login</h2>
+  <form action="" class="form">
+    <div class="user-box">
+      <input
+        class="input"
+        name="email"
+        [(ngModel)]="loginObj.userName"
+        type="text"
+        id="email"
+        placeholder="Email"
+      />
+      <!-- <label class="userName mb-3" for="">Username</label> -->
+    </div>
+    <!-- /.user-box -->
+    <div class="user-box">
+      <input
+        class="input"
+        name="password"
+        [(ngModel)]="loginObj.password"
+        type="password"
+        id="password"
+        placeholder="Password"
+      />
+      <!-- <label class="password" for="">Password</label> -->
+    </div>
+    <!-- /.user-box -->
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-outline-dark w-50" href="#" (click)="login()">
+        Submit
+      </button>
+    </div>
+  </form>
+  <!-- /form -->
+</div>
