@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-7">
+  <div class="col-8 overflow-x-scroll">
     <div class="card">
       <div class="card-header">
         <div class="d-flex justify-content-between">
@@ -8,8 +8,16 @@
         </div>
       </div>
       <div class="card-body">
-        <table class="table table-striped">
-          <thead>
+        <div class="d-flex justify-content-end m-2">
+          <input
+            type="text"
+            class="form-control w-25"
+            (keyup)="search($event)"
+            placeholder="Search..."
+          />
+        </div>
+        <table class="table table-striped border">
+          <thead style="width: 100%">
             <tr>
               <th>Employee ID</th>
               <th>Name</th>
@@ -21,11 +29,30 @@
               <th>Actions</th>
             </tr>
           </thead>
+          <tbody>
+            @for(emp of filteredEmployee; track $index){
+            <tr>
+              <td>{{ emp.employeeId }}</td>
+              <td>{{ emp.employeeName }}</td>
+              <td>{{ emp.contactNo }}</td>
+              <td style="word-break: break-all; overflow-wrap: break-all">
+                {{ emp.emailId }}
+              </td>
+              <td>{{ emp.deptId }}</td>
+              <td>{{ emp.role }}</td>
+              <td>{{ emp.gender }}</td>
+              <td>
+                <i class="fas fa-edit me-2"></i>
+                <i class="fas fa-trash"></i>
+              </td>
+            </tr>
+            }
+          </tbody>
         </table>
       </div>
     </div>
   </div>
-  <div class="col-5">
+  <div class="col-4">
     <div class="card">
       <div class="card-header">
         <div class="d-flex justify-content-between">
@@ -40,6 +67,7 @@
               <label for="Name" class="form-label"> Name</label>
               <input
                 type="text"
+                [(ngModel)]="employeeObj.employeeName"
                 class="form-control"
                 id="Name"
                 placeholder="Enter Name"
@@ -54,6 +82,7 @@
               <input
                 type="text"
                 class="form-control"
+                [(ngModel)]="employeeObj.contactNo"
                 id="contactNumber"
                 placeholder="Enter Contact Number"
               />
@@ -67,90 +96,115 @@
               <input
                 type="email"
                 class="form-control"
+                [(ngModel)]="employeeObj.emailId"
                 id="email"
                 placeholder="Email"
               />
             </div>
           </div>
-          <div class="row">
-            <div class="col-6">
-              <div class="mb-3">
-                <label for="parentDepartment" class="form-label"
-                  >Parent Department</label
-                >
-                <select
-                  class="form-select"
-                  aria-label="parentDepartment"
-                  [(ngModel)]="deptId"
-                  (change)="onDeptChange()"
-                >
-                  <option selected disabled>Select department</option>
-                  @for (dept of deptList; track $index) {
-                  <option [value]="dept.departmentId">
-                    {{ dept.departmentName }}
-                  </option>
-                  }
-                </select>
-              </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-3">
+              <label for="parentDepartment" class="form-label"
+                >Parent Department</label
+              >
+              <select
+                class="form-select"
+                aria-label="parentDepartment"
+                [(ngModel)]="deptId"
+                (change)="onDeptChange()"
+              >
+                <option selected disabled>Select department</option>
+                @for (dept of deptList; track $index) {
+                <option [value]="dept.departmentId">
+                  {{ dept.departmentName }}
+                </option>
+                }
+              </select>
             </div>
-            <div class="col-6">
-              <div class="mb-3">
-                <label for="childDepartment" class="form-label"
-                  >Child Department</label
-                >
-                <select class="form-select" aria-label="childDepartment">
-                  <option selected disabled>Select Child Department</option>
-                  @for(childDept of childDeptList; track $index){
-                  <option [value]="childDept.childDeptId">
-                    {{ childDept.departmentName }}
-                  </option>
-                  }
-                </select>
-              </div>
+          </div>
+          <div class="col-6">
+            <div class="mb-3">
+              <label for="childDepartment" class="form-label"
+                >Child Department</label
+              >
+              <select
+                class="form-select"
+                aria-label="childDepartment"
+                [(ngModel)]="employeeObj.deptId"
+              >
+                <option selected disabled>Select Child Department</option>
+                @for(childDept of childDeptList; track $index){
+                <option [value]="childDept.childDeptId">
+                  {{ childDept.departmentName }}
+                </option>
+                }
+              </select>
             </div>
-            <div class="row">
-              <div class="col-6">
-                <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    placeholder="Enter Password"
-                  />
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="mb-3">
-                  <label for="role" class="form-label">Role</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="role"
-                    placeholder="Enter Role"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <div class="mb-3">
-                  <label for="gender" class="form-label">Gender</label>
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
-                  >
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <button class="btn btn-dark">Submit</button>
           </div>
         </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                [(ngModel)]="employeeObj.password"
+                id="password"
+                placeholder="Enter Password"
+              />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="mb-3">
+              <label for="role" class="form-label">Role</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="employeeObj.role"
+                id="role"
+                placeholder="Enter Role"
+                readonly
+                disabled
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-3">
+              <div class="d-flex gap-3">
+                <label for="gender" class="form-label">Gender</label>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    [(ngModel)]="employeeObj.gender"
+                    name="gender"
+                    value="Male"
+                    id="male"
+                  />
+                  <label class="form-check-label" for="male"> Male </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    [(ngModel)]="employeeObj.gender"
+                    name="gender"
+                    value="Female"
+                    id="female"
+                    checked
+                  />
+                  <label class="form-check-label" for="female"> Female </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-dark" (click)="createEmployee()">Submit</button>
       </div>
     </div>
   </div>

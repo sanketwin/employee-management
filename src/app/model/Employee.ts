@@ -17,7 +17,7 @@ export class Employee {
     this.emailId = '';
     this.password = '';
     this.gender = '';
-    this.role = '';
+    this.role = 'Employee';
     this.createdDate = new Date();
   }
 }
